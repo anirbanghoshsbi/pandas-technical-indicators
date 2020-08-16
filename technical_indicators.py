@@ -29,6 +29,7 @@ def download_from_yahoo(ticker , start_date , end_date=False , Vol = False):
 	 :start_date : str(yyyy-dd-mm)
 	 :end_date : str(yyyy-dd-mm) optional'''
 	import fix_yahoo_finance as yf
+	from pandas_datareader import data as pdr
 	yf.pdr_override()
 
 	df = pdr.get_data_yahoo(ticker, start=start_date)
