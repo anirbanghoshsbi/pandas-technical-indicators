@@ -31,10 +31,14 @@ def download_from_yahoo(ticker , start_date , end_date=False , Vol = False):
 	import fix_yahoo_finance as yf
 	from pandas_datareader import data as pdr
 	yf.pdr_override()
-
-	df = pdr.get_data_yahoo(ticker, start=start_date)
-	df = df.dropna()
-	df = df.iloc[:,:4]
+	if end_date==False:
+		df = pdr.get_data_yahoo(ticker, start=start_date)
+		df = df.dropna()
+		df = df.iloc[:,:4]
+	elif end_date!=False:
+		df = pdr.get_data_yahoo(ticker, start=start_date , end=end_date)
+		df = df.dropna()
+		df = df[['Open', "High" , "Low" , "Close" , "Volume"]]
 	'''	
 	if end_date==end_date and Vol = False:
 		df = pdr.get_data_yahoo(ticker, start=start_date,end = end_date)
