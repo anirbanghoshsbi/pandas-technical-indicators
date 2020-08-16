@@ -22,6 +22,36 @@ import numpy as np
 # Init Logging Facilities
 log = logging.getLogger(__name__)
 
+def download_from_yahoo(ticker , start_date , end_date=False , Vol = False)
+	'''Imports Data From Yahoo Finance
+	 :param ticker : str(stock name)
+	 :start_date : str(yyyy-dd-mm)
+	 :end_date : str(yyyy-dd-mm) optional'''
+	import fix_yahoo_finance as yf
+	yf.pdr_override()
+
+	if end_date=False and Vol = False:
+		df = pdr.get_data_yahoo(ticker, start=start_date)
+		df = df.dropna()
+		df = df.iloc[:,:4]
+	if end_date=end_date and Vol = False:
+		df = pdr.get_data_yahoo(ticker, start=start_date,end = end_date)
+		df = df.dropna()
+		df = df.iloc[:,:4]	
+	if end_date=end_date and Vol = True:
+		df = pdr.get_data_yahoo(ticker, start=start_date, end=end_date)
+		df = df.dropna()
+		df = df[['Open', "High" , "Low" , "Close" , "Volume"]]
+	if end_date=False and Vol = True:	
+		df = pdr.get_data_yahoo(ticker, start=start_date)
+		df = df.dropna()
+		df = df[['Open', "High" , "Low" , "Close" , "Volume"]]
+	else :
+		Print('Please Check All Inputs')
+	
+	return df
+
+
 
 def moving_average(df, n):
     """Calculate the moving average for the given data.
