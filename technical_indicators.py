@@ -31,11 +31,11 @@ def download_from_yahoo(ticker , start_date , end_date=False , Vol = False):
 	import fix_yahoo_finance as yf
 	yf.pdr_override()
 
-	if end_date=False and Vol = False:
-		df = pdr.get_data_yahoo(ticker, start=start_date)
-		df = df.dropna()
-		df = df.iloc[:,:4]
-	if end_date=end_date and Vol = False:
+	df = pdr.get_data_yahoo(ticker, start=start_date)
+	df = df.dropna()
+	df = df.iloc[:,:4]
+	'''	
+	if end_date==end_date and Vol = False:
 		df = pdr.get_data_yahoo(ticker, start=start_date,end = end_date)
 		df = df.dropna()
 		df = df.iloc[:,:4]	
@@ -49,6 +49,7 @@ def download_from_yahoo(ticker , start_date , end_date=False , Vol = False):
 		df = df[['Open', "High" , "Low" , "Close" , "Volume"]]
 	else :
 		Print('Please Check All Inputs')
+	'''	
 	
 	return df
 
