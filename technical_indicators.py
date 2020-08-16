@@ -22,7 +22,8 @@ import numpy as np
 # Init Logging Facilities
 log = logging.getLogger(__name__)
 
-def download_from_yahoo(ticker , start_date , end_date=False , Vol = False)
+def download_from_yahoo(ticker , start_date , end_date=False , Vol = False):
+	
 	'''Imports Data From Yahoo Finance
 	 :param ticker : str(stock name)
 	 :start_date : str(yyyy-dd-mm)
