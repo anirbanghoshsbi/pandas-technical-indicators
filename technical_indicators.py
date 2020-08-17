@@ -110,7 +110,7 @@ def rate_of_change(df, n):
     return df
 
 
-def average_true_range(dfa, n):
+def average_true_range(df, n):
     """
     
     :param df: pandas.DataFrame
@@ -119,15 +119,15 @@ def average_true_range(dfa, n):
     """
     i = 0
     TR_l = [0]
-    df=dfa.reset_index() 	
-    while i < df.index[-1]:
+     	
+    while i < len(df)-1:
         TR = max(df.loc[i + 1, 'High'], df.loc[i, 'Close']) - min(df.loc[i + 1, 'Low'], df.loc[i, 'Close'])
         TR_l.append(TR)
         i = i + 1
     TR_s = pd.Series(TR_l)
     ATR = pd.Series(TR_s.ewm(span=n, min_periods=n).mean(), name='ATR_' + str(n))
-    dfa = dfa.join(ATR)
-    return dfa
+    df = df.join(ATR)
+    return df
 
 
 def bollinger_bands(df, n):
@@ -190,10 +190,10 @@ def stochastic_oscillator_d(df, n):
     return df
 
 
-def trix(dfa, n):
+def trix(df, n):
     """Calculate TRIX for given data.
     
-    :param dfa: pandas.DataFrame
+    :param df: pandas.DataFrame
     :param n: 
     :return: pandas.DataFrame
     """
@@ -202,17 +202,17 @@ def trix(dfa, n):
     EX3 = EX2.ewm(span=n, min_periods=n).mean()
     i = 0
     ROC_l = [np.nan]
-    df=dfa.reset_index()
-    while i + 1 <= df.index[-1]:
+    
+    while i + 1 <= len(df)-1:
         ROC = (EX3[i + 1] - EX3[i]) / EX3[i]
         ROC_l.append(ROC)
         i = i + 1
     Trix = pd.Series(ROC_l, name='Trix_' + str(n))
-    dfa = dfa.join(Trix)
-    return dfa
+    df = df.join(Trix)
+    return df
 
 
-def average_directional_movement_index(dfa, n, n_ADX):
+def average_directional_movement_index(df, n, n_ADX):
     """Calculate the Average Directional Movement Index for given data.
     
     :param df: pandas.DataFrame
@@ -223,8 +223,8 @@ def average_directional_movement_index(dfa, n, n_ADX):
     i = 0
     UpI = []
     DoI = []
-    df =dfa.reset_index()	
-    while i + 1 <= df.index[-1]:
+    	
+    while i + 1 <= len(df)-1:
         UpMove = df.loc[i + 1, 'High'] - df.loc[i, 'High']
         DoMove = df.loc[i, 'Low'] - df.loc[i + 1, 'Low']
         if UpMove > DoMove and UpMove > 0:
@@ -240,7 +240,7 @@ def average_directional_movement_index(dfa, n, n_ADX):
         i = i + 1
     i = 0
     TR_l = [0]
-    while i < df.index[-1]:
+    while i < llen(df)-1:
         TR = max(df.loc[i + 1, 'High'], df.loc[i, 'Close']) - min(df.loc[i + 1, 'Low'], df.loc[i, 'Close'])
         TR_l.append(TR)
         i = i + 1
@@ -252,8 +252,8 @@ def average_directional_movement_index(dfa, n, n_ADX):
     NegDI = pd.Series(DoI.ewm(span=n, min_periods=n).mean() / ATR)
     ADX = pd.Series((abs(PosDI - NegDI) / (PosDI + NegDI)).ewm(span=n_ADX, min_periods=n_ADX).mean(),
                     name='ADX_' + str(n) + '_' + str(n_ADX))
-    dfa = dfa.join(ADX)
-    return dfa
+    df = df.join(ADX)
+    return df
 
 
 def macd(df, n_fast, n_slow):
@@ -290,7 +290,7 @@ def mass_index(df):
     return df
 
 
-def vortex_indicator(dfa, n):
+def vortex_indicator(df, n):
     """Calculate the Vortex Indicator for given data.
     
     Vortex Indicator described here:
@@ -301,20 +301,20 @@ def vortex_indicator(dfa, n):
     """
     i = 0
     TR = [0]
-    df= dfa.reset_index()
-    while i < df.index[-1]:
+    
+    while i < len(df)-1:
         Range = max(df.loc[i + 1, 'High'], df.loc[i, 'Close']) - min(df.loc[i + 1, 'Low'], df.loc[i, 'Close'])
         TR.append(Range)
         i = i + 1
     i = 0
     VM = [0]
-    while i < df.index[-1]:
+    while i < len(df)-1:
         Range = abs(df.loc[i + 1, 'High'] - df.loc[i, 'Low']) - abs(df.loc[i + 1, 'Low'] - df.loc[i, 'High'])
         VM.append(Range)
         i = i + 1
     VI = pd.Series(pd.Series(VM).rolling(n).sum() / pd.Series(TR).rolling(n).sum(), name='Vortex_' + str(n))
-    dfa = dfa.join(VI)
-    return dfa
+    df = df.join(VI)
+    return df
 
 
 def kst_oscillator(df, r1, r2, r3, r4, n1, n2, n3, n4):
@@ -351,7 +351,7 @@ def kst_oscillator(df, r1, r2, r3, r4, n1, n2, n3, n4):
     return df
 
 
-def relative_strength_index(dfa, n):
+def relative_strength_index(df, n):
     """Calculate Relative Strength Index(RSI) for given data.
     
     :param df: pandas.DataFrame
@@ -361,8 +361,8 @@ def relative_strength_index(dfa, n):
     i = 0
     UpI = [0]
     DoI = [0]
-    df=dfa.reset_index()	
-    while i + 1 <= df.index[-1]:
+    	
+    while i + 1 <= len(df)-1:
         UpMove = df.loc[i + 1, 'High'] - df.loc[i, 'High']
         DoMove = df.loc[i, 'Low'] - df.loc[i + 1, 'Low']
         if UpMove > DoMove and UpMove > 0:
@@ -442,7 +442,7 @@ def money_flow_index(df, n):
     PP = (df['High'] + df['Low'] + df['Close']) / 3
     i = 0
     PosMF = [0]
-    while i < df.index[-1]:
+    while i < len(df)-1:
         if PP[i + 1] > PP[i]:
             PosMF.append(PP[i + 1] * df.loc[i + 1, 'Volume'])
         else:
@@ -456,7 +456,7 @@ def money_flow_index(df, n):
     return df
 
 
-def on_balance_volume(dfa, n):
+def on_balance_volume(df, n):
     """Calculate On-Balance Volume for given data.
     
     :param df: pandas.DataFrame
@@ -465,8 +465,8 @@ def on_balance_volume(dfa, n):
     """
     i = 0
     OBV = [0]
-    df=dfa.reset_index()	
-    while i < df.index[-1]:
+    	
+    while i < len(df)-1:
         if df.loc[i + 1, 'Close'] - df.loc[i, 'Close'] > 0:
             OBV.append(df.loc[i + 1, 'Volume'])
         if df.loc[i + 1, 'Close'] - df.loc[i, 'Close'] == 0:
@@ -476,8 +476,8 @@ def on_balance_volume(dfa, n):
         i = i + 1
     OBV = pd.Series(OBV)
     OBV_ma = pd.Series(OBV.rolling(n, min_periods=n).mean(), name='OBV_' + str(n))
-    dfa = dfa.join(OBV_ma)
-    return dfa
+    df = df.join(OBV_ma)
+    return df
 
 
 def force_index(df, n):
@@ -556,17 +556,17 @@ def keltner_channel(df, n):
     return df
 
 
-def ultimate_oscillator(dfa):
+def ultimate_oscillator(df):
     """Calculate Ultimate Oscillator for given data.
     
-    :param dfa: pandas.DataFrame
+    :param df: pandas.DataFrame
     :return: pandas.DataFrame
     """
     i = 0
     TR_l = [0]
     BP_l = [0]
-    df=dfa.reset_index()	
-    while i < df.index[-1]:
+    	
+    while i < len(df)-1:
         TR = max(df.loc[i + 1, 'High'], df.loc[i, 'Close']) - min(df.loc[i + 1, 'Low'], df.loc[i, 'Close'])
         TR_l.append(TR)
         BP = df.loc[i + 1, 'Close'] - min(df.loc[i + 1, 'Low'], df.loc[i, 'Close'])
@@ -576,13 +576,13 @@ def ultimate_oscillator(dfa):
                 2 * pd.Series(BP_l).rolling(14).sum() / pd.Series(TR_l).rolling(14).sum()) + (
                                  pd.Series(BP_l).rolling(28).sum() / pd.Series(TR_l).rolling(28).sum()),
                      name='Ultimate_Osc')
-    dfa = dfa.join(UltO)
-    return dfa
+    df = df.join(UltO)
+    return df
 
 
-def donchian_channel(dfa, n):
+def donchian_channel(df, n):
     """Calculate donchian channel of given pandas data frame.
-    :param dfa: pandas.DataFrame
+    :param df: pandas.DataFrame
     :param n:
     :return: pandas.DataFrame
     """
@@ -593,15 +593,15 @@ def donchian_channel(dfa, n):
         i += 1
 
     i = 0
-    df=dfa.reset_index()
-    while i + n - 1 < df.index[-1]:
+    
+    while i + n - 1 <len(df)-1:
         dc = max(df['High'].ix[i:i + n - 1]) - min(df['Low'].ix[i:i + n - 1])
         dc_l.append(dc)
         i += 1
 
     donchian_chan = pd.Series(dc_l, name='Donchian_' + str(n))
     donchian_chan = donchian_chan.shift(n - 1)
-    return dfa.join(donchian_chan)
+    return df.join(donchian_chan)
 
 
 def standard_deviation(df, n):
