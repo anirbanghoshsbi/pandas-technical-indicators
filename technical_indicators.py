@@ -126,8 +126,8 @@ def average_true_range(dfa, n):
         i = i + 1
     TR_s = pd.Series(TR_l)
     ATR = pd.Series(TR_s.ewm(span=n, min_periods=n).mean(), name='ATR_' + str(n))
-    df = df.join(ATR)
-    return df
+    dfa = dfa.join(ATR)
+    return dfa
 
 
 def bollinger_bands(df, n):
@@ -190,10 +190,10 @@ def stochastic_oscillator_d(df, n):
     return df
 
 
-def trix(df, n):
+def trix(dfa, n):
     """Calculate TRIX for given data.
     
-    :param df: pandas.DataFrame
+    :param dfa: pandas.DataFrame
     :param n: 
     :return: pandas.DataFrame
     """
@@ -202,13 +202,14 @@ def trix(df, n):
     EX3 = EX2.ewm(span=n, min_periods=n).mean()
     i = 0
     ROC_l = [np.nan]
+    df=dfa.reset_index()
     while i + 1 <= df.index[-1]:
         ROC = (EX3[i + 1] - EX3[i]) / EX3[i]
         ROC_l.append(ROC)
         i = i + 1
     Trix = pd.Series(ROC_l, name='Trix_' + str(n))
-    df = df.join(Trix)
-    return df
+    dfa = dfa.join(Trix)
+    return dfa
 
 
 def average_directional_movement_index(dfa, n, n_ADX):
@@ -251,8 +252,8 @@ def average_directional_movement_index(dfa, n, n_ADX):
     NegDI = pd.Series(DoI.ewm(span=n, min_periods=n).mean() / ATR)
     ADX = pd.Series((abs(PosDI - NegDI) / (PosDI + NegDI)).ewm(span=n_ADX, min_periods=n_ADX).mean(),
                     name='ADX_' + str(n) + '_' + str(n_ADX))
-    df = df.join(ADX)
-    return df
+    dfa = dfa.join(ADX)
+    return dfa
 
 
 def macd(df, n_fast, n_slow):
@@ -312,8 +313,8 @@ def vortex_indicator(dfa, n):
         VM.append(Range)
         i = i + 1
     VI = pd.Series(pd.Series(VM).rolling(n).sum() / pd.Series(TR).rolling(n).sum(), name='Vortex_' + str(n))
-    df = df.join(VI)
-    return df
+    dfa = dfa.join(VI)
+    return dfa
 
 
 def kst_oscillator(df, r1, r2, r3, r4, n1, n2, n3, n4):
@@ -475,8 +476,8 @@ def on_balance_volume(df, n):
         i = i + 1
     OBV = pd.Series(OBV)
     OBV_ma = pd.Series(OBV.rolling(n, min_periods=n).mean(), name='OBV_' + str(n))
-    df = df.join(OBV_ma)
-    return df
+    dfa = dfa.join(OBV_ma)
+    return dfa
 
 
 def force_index(df, n):
@@ -558,7 +559,7 @@ def keltner_channel(df, n):
 def ultimate_oscillator(dfa):
     """Calculate Ultimate Oscillator for given data.
     
-    :param df: pandas.DataFrame
+    :param dfa: pandas.DataFrame
     :return: pandas.DataFrame
     """
     i = 0
@@ -575,8 +576,8 @@ def ultimate_oscillator(dfa):
                 2 * pd.Series(BP_l).rolling(14).sum() / pd.Series(TR_l).rolling(14).sum()) + (
                                  pd.Series(BP_l).rolling(28).sum() / pd.Series(TR_l).rolling(28).sum()),
                      name='Ultimate_Osc')
-    df = df.join(UltO)
-    return df
+    dfa = dfa.join(UltO)
+    return dfa
 
 
 def donchian_channel(dfa, n):
@@ -600,7 +601,7 @@ def donchian_channel(dfa, n):
 
     donchian_chan = pd.Series(dc_l, name='Donchian_' + str(n))
     donchian_chan = donchian_chan.shift(n - 1)
-    return df.join(donchian_chan)
+    return dfa.join(donchian_chan)
 
 
 def standard_deviation(df, n):
