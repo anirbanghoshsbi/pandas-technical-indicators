@@ -3,7 +3,8 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.model_selection import train_test_split
 from sklearn.model_selection import RandomizedSearchCV
 
-def best_param_rf(X_train , y_train , iterations=100)
+def best_param_rf(X_train , y_train , iterations=100):
+      
 
 
       # Number of trees is not a parameter that should be tuned, but just set large enough usually. There is no risk of overfitting in random forest with growing number of # trees, as they are trained independently from each other. 
@@ -53,4 +54,4 @@ def best_param_rf(X_train , y_train , iterations=100)
       #best_parameters = rf_random.best_estimator_.get_params()
       #for param_name in sorted(random_grid.keys()):
       #  print(f"\t{param_name}: {best_parameters[param_name]}")
-return dictionary
+      return dictionary
