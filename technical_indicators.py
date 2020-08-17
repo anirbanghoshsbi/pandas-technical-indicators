@@ -13,9 +13,11 @@ https://www.quantopian.com/posts/technical-analysis-indicators-without-talib-cod
 # Import Built-Ins
 import logging
 
-# Import Third-Party
+# Import Libraries
 import pandas as pd
 import numpy as np
+import seaborn as sns
+import matplotlib.pyplot as plt
 
 # Import Homebrew
 
@@ -626,8 +628,14 @@ def standard_deviation(df, n):
 
 
 def correlation_map(df, figure_size=15):
-	import seaborn as sns
-	import matplotlib.pyplot as plt
+	"""Plots the Correlation map of the variables of a DataFrame
+    
+        :param df: pandas.DataFrame
+        :param figure_size: (int) optional 
+        : 
+        :return: Plots Seaborn correlation map
+        """
+	
 	corrM = df.corr()
 	plt.figure(figsize=(figure_size,figure_size))
 	sns.heatmap(corrM,vmin=-1, vmax=1, center=0,cmap=sns.diverging_palette(20, 220, n=200),square=True,annot=True)
