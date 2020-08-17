@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 from sklearn.metrics import confusion_matrix, plot_confusion_matrix
 
 
-def confusion_matrix(signalflag , prediction):
+def confus_matrix(signalflag , prediction):
     ''' Signal_Flag : Pandas Series of Actual Data Points
         predictions : Pandas Series of Predicted Data points
         returns : the confusion matrix and accuracy , precision , recall 
