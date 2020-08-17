@@ -9,7 +9,7 @@ def confus_matrix(signalflag , prediction):
         returns : the confusion matrix and accuracy , precision , recall 
         and specificity.
     '''    
-    rf_matrix = confusion_matrix(signalflag,pred1)
+    rf_matrix = confusion_matrix(signalflag,prediction)
 
     true_negatives = rf_matrix[0][0]
     false_negatives = rf_matrix[1][0]
