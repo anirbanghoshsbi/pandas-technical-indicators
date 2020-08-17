@@ -623,3 +623,13 @@ def standard_deviation(df, n):
     """
     df = df.join(pd.Series(df['Close'].rolling(n, min_periods=n).std(), name='STD_' + str(n)))
     return df
+
+
+def correlation(df, figure_size=15):
+	import seaborn as sns
+	import matplotlib.pyplot as plt
+	corrM = df.corr()
+	plt.figure(figsize=(figure_size,figure_size))
+	sns.heatmap(corrM,vmin=-1, vmax=1, center=0,cmap=sns.diverging_palette(20, 220, n=200),square=True,annot=True)
+
+	plt.show()
