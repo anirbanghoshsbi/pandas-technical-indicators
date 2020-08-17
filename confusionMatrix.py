@@ -3,9 +3,10 @@ import matplotlib.pyplot as plt
 from sklearn.metrics import confusion_matrix, plot_confusion_matrix
 
 
-def confus_matrix(signalflag , prediction):
+def confus_matrix(signalflag , prediction , model):
     ''' Signal_Flag : Pandas Series of Actual Data Points
         predictions : Pandas Series of Predicted Data points
+        model : trained model
         returns : the confusion matrix and accuracy , precision , recall 
         and specificity.
     '''    
@@ -26,6 +27,6 @@ def confus_matrix(signalflag , prediction):
     print('Recall: {}'.format(float(recall)*100))
     print('Specificity: {}'.format(float(specificity)*100))
 
-    disp = plot_confusion_matrix(rand_frst_clf, X_test, y_test, display_labels = ['Down Day', 'Up Day'], normalize = 'true', cmap=plt.cm.Blues)
+    disp = plot_confusion_matrix(model, X_test, y_test, display_labels = ['Down Day', 'Up Day'], normalize = 'true', cmap=plt.cm.Blues)
     disp.ax_.set_title('Confusion Matrix - Normalized for the Actual Trading Data')
     plt.show()
