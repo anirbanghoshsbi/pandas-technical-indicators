@@ -4,7 +4,8 @@ from sklearn.metrics import confusion_matrix, plot_confusion_matrix
 import numpy as np
 
 def confus_matrix(signalflag , prediction , model=False ,X_test=False,y_test=False ,plot=False):
-    ''' Signal_Flag : Pandas Series of Actual Data Points
+    ''' #cm.confus_matrix(actual_results,predictions,model,<test data(or new_data for prediction except target VAR)>,<actaul Target VAR> ,<plot=True>)
+        Signal_Flag : Pandas Series of Actual Data Points
         predictions : Pandas Series of Predicted Data points
         model : trained model
         returns : the confusion matrix and accuracy , precision , recall 
