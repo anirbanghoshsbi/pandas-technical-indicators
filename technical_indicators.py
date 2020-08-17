@@ -460,6 +460,7 @@ def on_balance_volume(df, n):
     """
     i = 0
     OBV = [0]
+    df=df.reset_index(inplace=True)	
     while i < df.index[-1]:
         if df.loc[i + 1, 'Close'] - df.loc[i, 'Close'] > 0:
             OBV.append(df.loc[i + 1, 'Volume'])
