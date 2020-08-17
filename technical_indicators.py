@@ -625,7 +625,7 @@ def standard_deviation(df, n):
     return df
 
 
-def correlation(df, figure_size=15):
+def correlation_map(df, figure_size=15):
 	import seaborn as sns
 	import matplotlib.pyplot as plt
 	corrM = df.corr()
