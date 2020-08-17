@@ -3,13 +3,13 @@ import matplotlib.pyplot as plt
 from sklearn.metrics import confusion_matrix, plot_confusion_matrix
 
 
-def confusion_matrix(Signal_Flag , prediction):
+def confusion_matrix(signalflag , prediction):
     ''' Signal_Flag : Pandas Series of Actual Data Points
         predictions : Pandas Series of Predicted Data points
         returns : the confusion matrix and accuracy , precision , recall 
         and specificity.
     '''    
-    rf_matrix = confusion_matrix(df.Signal_Flag,pred1)
+    rf_matrix = confusion_matrix(signalflag,pred1)
 
     true_negatives = rf_matrix[0][0]
     false_negatives = rf_matrix[1][0]
