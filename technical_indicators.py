@@ -36,7 +36,7 @@ def download_from_yahoo(ticker , start_date , end_date=False , Vol = False):
 	if end_date==False:
 		df = pdr.get_data_yahoo(ticker, start=start_date)
 		df = df.dropna()
-		df = df.iloc[:,:4]
+		df = df[['Open', "High" , "Low" , "Close" , "Volume"]]
 	elif end_date!=False:
 		df = pdr.get_data_yahoo(ticker, start=start_date , end=end_date)
 		df = df.dropna()
