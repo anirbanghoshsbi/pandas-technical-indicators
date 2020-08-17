@@ -110,7 +110,7 @@ def rate_of_change(df, n):
     return df
 
 
-def average_true_range(df, n):
+def average_true_range(dfa, n):
     """
     
     :param df: pandas.DataFrame
@@ -119,6 +119,7 @@ def average_true_range(df, n):
     """
     i = 0
     TR_l = [0]
+    df=dfa.reset_index() 	
     while i < df.index[-1]:
         TR = max(df.loc[i + 1, 'High'], df.loc[i, 'Close']) - min(df.loc[i + 1, 'Low'], df.loc[i, 'Close'])
         TR_l.append(TR)
@@ -210,7 +211,7 @@ def trix(df, n):
     return df
 
 
-def average_directional_movement_index(df, n, n_ADX):
+def average_directional_movement_index(dfa, n, n_ADX):
     """Calculate the Average Directional Movement Index for given data.
     
     :param df: pandas.DataFrame
@@ -221,6 +222,7 @@ def average_directional_movement_index(df, n, n_ADX):
     i = 0
     UpI = []
     DoI = []
+    df =dfa.reset_index()	
     while i + 1 <= df.index[-1]:
         UpMove = df.loc[i + 1, 'High'] - df.loc[i, 'High']
         DoMove = df.loc[i, 'Low'] - df.loc[i + 1, 'Low']
@@ -287,7 +289,7 @@ def mass_index(df):
     return df
 
 
-def vortex_indicator(df, n):
+def vortex_indicator(dfa, n):
     """Calculate the Vortex Indicator for given data.
     
     Vortex Indicator described here:
@@ -298,6 +300,7 @@ def vortex_indicator(df, n):
     """
     i = 0
     TR = [0]
+    df= dfa.reset_index()
     while i < df.index[-1]:
         Range = max(df.loc[i + 1, 'High'], df.loc[i, 'Close']) - min(df.loc[i + 1, 'Low'], df.loc[i, 'Close'])
         TR.append(Range)
@@ -347,7 +350,7 @@ def kst_oscillator(df, r1, r2, r3, r4, n1, n2, n3, n4):
     return df
 
 
-def relative_strength_index(df, n):
+def relative_strength_index(dfa, n):
     """Calculate Relative Strength Index(RSI) for given data.
     
     :param df: pandas.DataFrame
@@ -357,6 +360,7 @@ def relative_strength_index(df, n):
     i = 0
     UpI = [0]
     DoI = [0]
+    df=dfa.reset_index()	
     while i + 1 <= df.index[-1]:
         UpMove = df.loc[i + 1, 'High'] - df.loc[i, 'High']
         DoMove = df.loc[i, 'Low'] - df.loc[i + 1, 'Low']
@@ -551,7 +555,7 @@ def keltner_channel(df, n):
     return df
 
 
-def ultimate_oscillator(df):
+def ultimate_oscillator(dfa):
     """Calculate Ultimate Oscillator for given data.
     
     :param df: pandas.DataFrame
@@ -560,6 +564,7 @@ def ultimate_oscillator(df):
     i = 0
     TR_l = [0]
     BP_l = [0]
+    df=dfa.reset_index()	
     while i < df.index[-1]:
         TR = max(df.loc[i + 1, 'High'], df.loc[i, 'Close']) - min(df.loc[i + 1, 'Low'], df.loc[i, 'Close'])
         TR_l.append(TR)
@@ -574,9 +579,9 @@ def ultimate_oscillator(df):
     return df
 
 
-def donchian_channel(df, n):
+def donchian_channel(dfa, n):
     """Calculate donchian channel of given pandas data frame.
-    :param df: pandas.DataFrame
+    :param dfa: pandas.DataFrame
     :param n:
     :return: pandas.DataFrame
     """
@@ -587,6 +592,7 @@ def donchian_channel(df, n):
         i += 1
 
     i = 0
+    df=dfa.reset_index()
     while i + n - 1 < df.index[-1]:
         dc = max(df['High'].ix[i:i + n - 1]) - min(df['Low'].ix[i:i + n - 1])
         dc_l.append(dc)
