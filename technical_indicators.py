@@ -119,14 +119,15 @@ def average_true_range(df, n):
     """
     i = 0
     TR_l = [0]
-     	
-    while i < len(df)-1:
+    df.reset_index(inplace=True) 	
+    while i < df.index[-1]:
         TR = max(df.loc[i + 1, 'High'], df.loc[i, 'Close']) - min(df.loc[i + 1, 'Low'], df.loc[i, 'Close'])
         TR_l.append(TR)
         i = i + 1
     TR_s = pd.Series(TR_l)
     ATR = pd.Series(TR_s.ewm(span=n, min_periods=n).mean(), name='ATR_' + str(n))
     df = df.join(ATR)
+    df = df.set_index('Date')
     return df
 
 
@@ -202,13 +203,14 @@ def trix(df, n):
     EX3 = EX2.ewm(span=n, min_periods=n).mean()
     i = 0
     ROC_l = [np.nan]
-    
-    while i + 1 <= len(df)-1:
+    df.reset_index(inplace=True)
+    while i + 1 <= df.index[-1]:
         ROC = (EX3[i + 1] - EX3[i]) / EX3[i]
         ROC_l.append(ROC)
         i = i + 1
     Trix = pd.Series(ROC_l, name='Trix_' + str(n))
     df = df.join(Trix)
+    df = df.set_index('Date')	
     return df
 
 
@@ -223,8 +225,8 @@ def average_directional_movement_index(df, n, n_ADX):
     i = 0
     UpI = []
     DoI = []
-    	
-    while i + 1 <= len(df)-1:
+    df.reset_index(inplace=True)	
+    while i + 1 <= df.index[-1]:
         UpMove = df.loc[i + 1, 'High'] - df.loc[i, 'High']
         DoMove = df.loc[i, 'Low'] - df.loc[i + 1, 'Low']
         if UpMove > DoMove and UpMove > 0:
@@ -240,7 +242,7 @@ def average_directional_movement_index(df, n, n_ADX):
         i = i + 1
     i = 0
     TR_l = [0]
-    while i < llen(df)-1:
+    while i < df.index[-1]:
         TR = max(df.loc[i + 1, 'High'], df.loc[i, 'Close']) - min(df.loc[i + 1, 'Low'], df.loc[i, 'Close'])
         TR_l.append(TR)
         i = i + 1
@@ -253,6 +255,7 @@ def average_directional_movement_index(df, n, n_ADX):
     ADX = pd.Series((abs(PosDI - NegDI) / (PosDI + NegDI)).ewm(span=n_ADX, min_periods=n_ADX).mean(),
                     name='ADX_' + str(n) + '_' + str(n_ADX))
     df = df.join(ADX)
+    df=df.set_index('Date')	
     return df
 
 
@@ -301,19 +304,20 @@ def vortex_indicator(df, n):
     """
     i = 0
     TR = [0]
-    
-    while i < len(df)-1:
+    df.reset_index(inplace=True)
+    while i < df.index[-1]:
         Range = max(df.loc[i + 1, 'High'], df.loc[i, 'Close']) - min(df.loc[i + 1, 'Low'], df.loc[i, 'Close'])
         TR.append(Range)
         i = i + 1
     i = 0
     VM = [0]
-    while i < len(df)-1:
+    while i < df.index[-1]:
         Range = abs(df.loc[i + 1, 'High'] - df.loc[i, 'Low']) - abs(df.loc[i + 1, 'Low'] - df.loc[i, 'High'])
         VM.append(Range)
         i = i + 1
     VI = pd.Series(pd.Series(VM).rolling(n).sum() / pd.Series(TR).rolling(n).sum(), name='Vortex_' + str(n))
     df = df.join(VI)
+    df=df.set_index("Date") 	
     return df
 
 
@@ -361,8 +365,8 @@ def relative_strength_index(df, n):
     i = 0
     UpI = [0]
     DoI = [0]
-    	
-    while i + 1 <= len(df)-1:
+    df.reset_index(inplace=True)	
+    while i + 1 <= df.index[-1]:
         UpMove = df.loc[i + 1, 'High'] - df.loc[i, 'High']
         DoMove = df.loc[i, 'Low'] - df.loc[i + 1, 'Low']
         if UpMove > DoMove and UpMove > 0:
@@ -382,6 +386,7 @@ def relative_strength_index(df, n):
     NegDI = pd.Series(DoI.ewm(span=n, min_periods=n).mean())
     RSI = pd.Series(PosDI / (PosDI + NegDI), name='RSI_' + str(n))
     df = df.join(RSI)
+    df= df.set_index('Date')	
     return df
 
 
@@ -442,7 +447,8 @@ def money_flow_index(df, n):
     PP = (df['High'] + df['Low'] + df['Close']) / 3
     i = 0
     PosMF = [0]
-    while i < len(df)-1:
+    df.reset_index(inplace=True)
+    while i < df.index[-1]:
         if PP[i + 1] > PP[i]:
             PosMF.append(PP[i + 1] * df.loc[i + 1, 'Volume'])
         else:
@@ -453,6 +459,7 @@ def money_flow_index(df, n):
     MFR = pd.Series(PosMF / TotMF)
     MFI = pd.Series(MFR.rolling(n, min_periods=n).mean(), name='MFI_' + str(n))
     df = df.join(MFI)
+    df= df.set_index('Date')
     return df
 
 
@@ -465,8 +472,8 @@ def on_balance_volume(df, n):
     """
     i = 0
     OBV = [0]
-    	
-    while i < len(df)-1:
+    df.reset_index(inplace=True)	
+    while i < df.index[-1]:
         if df.loc[i + 1, 'Close'] - df.loc[i, 'Close'] > 0:
             OBV.append(df.loc[i + 1, 'Volume'])
         if df.loc[i + 1, 'Close'] - df.loc[i, 'Close'] == 0:
@@ -477,6 +484,7 @@ def on_balance_volume(df, n):
     OBV = pd.Series(OBV)
     OBV_ma = pd.Series(OBV.rolling(n, min_periods=n).mean(), name='OBV_' + str(n))
     df = df.join(OBV_ma)
+    df = df.set_index('Date')
     return df
 
 
@@ -565,8 +573,8 @@ def ultimate_oscillator(df):
     i = 0
     TR_l = [0]
     BP_l = [0]
-    	
-    while i < len(df)-1:
+    df.reset_index(inplace=True)	
+    while i < df.index[-1]:
         TR = max(df.loc[i + 1, 'High'], df.loc[i, 'Close']) - min(df.loc[i + 1, 'Low'], df.loc[i, 'Close'])
         TR_l.append(TR)
         BP = df.loc[i + 1, 'Close'] - min(df.loc[i + 1, 'Low'], df.loc[i, 'Close'])
@@ -577,6 +585,7 @@ def ultimate_oscillator(df):
                                  pd.Series(BP_l).rolling(28).sum() / pd.Series(TR_l).rolling(28).sum()),
                      name='Ultimate_Osc')
     df = df.join(UltO)
+    df = df.set_index('Date')	
     return df
 
 
@@ -593,14 +602,15 @@ def donchian_channel(df, n):
         i += 1
 
     i = 0
-    
-    while i + n - 1 <len(df)-1:
+    df.reset_index(inplace=True)
+    while i + n - 1 <df.index[-1]:
         dc = max(df['High'].ix[i:i + n - 1]) - min(df['Low'].ix[i:i + n - 1])
         dc_l.append(dc)
         i += 1
 
     donchian_chan = pd.Series(dc_l, name='Donchian_' + str(n))
     donchian_chan = donchian_chan.shift(n - 1)
+    df=df.set_index('Date')	
     return df.join(donchian_chan)
 
 
