@@ -456,7 +456,7 @@ def money_flow_index(df, n):
     return df
 
 
-def on_balance_volume(df, n):
+def on_balance_volume(dfa, n):
     """Calculate On-Balance Volume for given data.
     
     :param df: pandas.DataFrame
@@ -465,7 +465,7 @@ def on_balance_volume(df, n):
     """
     i = 0
     OBV = [0]
-    df=df.reset_index(inplace=True)	
+    df=dfa.reset_index()	
     while i < df.index[-1]:
         if df.loc[i + 1, 'Close'] - df.loc[i, 'Close'] > 0:
             OBV.append(df.loc[i + 1, 'Volume'])
