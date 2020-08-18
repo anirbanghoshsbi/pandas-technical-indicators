@@ -2,7 +2,8 @@
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.model_selection import train_test_split
 from sklearn.model_selection import RandomizedSearchCV
-
+import pandas as pd
+import numpy as np
 def best_param_rf(X_train , y_train , iterations=100):
       
 
