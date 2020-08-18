@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 from sklearn.metrics import confusion_matrix, plot_confusion_matrix
 import numpy as np
 
-def confus_matrix(signalflag , prediction , model=False ,X_test=False,y_test=False ,plot=False):
+def confus_matrix(signalflag , prediction , model=False ,X_test=False,y_test=False ,plot=False , test=True):
     ''' #cm.confus_matrix(actual_results,predictions,model,<test data(or new_data for prediction except target VAR)>,<actaul Target VAR> ,<plot=True>)
         Signal_Flag : Pandas Series of Actual Data Points
         predictions : Pandas Series of Predicted Data points
@@ -27,7 +27,11 @@ def confus_matrix(signalflag , prediction , model=False ,X_test=False,y_test=Fal
     print('Percision: {}'.format(float(percision)*100))
     print('Recall: {}'.format(float(recall)*100))
     print('Specificity: {}'.format(float(specificity)*100))
-    if plot==True:
+    if plot==True and test==True:
+        disp = plot_confusion_matrix(model, X_test, y_test, display_labels = ['Down Day', 'Up Day'], normalize = 'true', cmap=plt.cm.Blues)
+        disp.ax_.set_title('Confusion Matrix - Normalized for the Testing Dataset')
+        plt.show()
+    elif plot==True and test==False:
         disp = plot_confusion_matrix(model, X_test, y_test, display_labels = ['Down Day', 'Up Day'], normalize = 'true', cmap=plt.cm.Blues)
         disp.ax_.set_title('Confusion Matrix - Normalized for the Actual Trading Data')
         plt.show()
