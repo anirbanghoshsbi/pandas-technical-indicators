@@ -55,3 +55,16 @@ def best_param_rf(X_train , y_train , iterations=100):
       #for param_name in sorted(random_grid.keys()):
       #  print(f"\t{param_name}: {best_parameters[param_name]}")
       return dictionary
+def make_preds(new_data, trained_model , df):
+      '''
+      new_data : df except the prediction column
+      trained_model : trained model for actual prediction
+      df : dataframe with the date column
+      returns a df
+      '''
+      pred1 = pd.DataFrame(trained_model.predict(new_data))
+      ppp =df.reset_index()
+      pred1 = pd.concat([pred1 , ppp.Date],axis=1)
+      pred1= pred1.set_index('Date')
+      pred1.columns = ['preds']
+      return pred1
