@@ -24,6 +24,45 @@ import matplotlib.pyplot as plt
 # Init Logging Facilities
 log = logging.getLogger(__name__)
 
+def find_window_high_low(df,lookback_days):
+
+	"""
+	Get the highs and lows in a lookback window.
+
+	Parameters
+	----------
+	high : DataFrame
+	High price for each ticker and date
+	low : DataFrame
+	Low price for each ticker and date
+	lookback_days : int
+	The number of days to look back
+
+	Returns
+	-------
+	lookback_high : DataFrame
+	Lookback high price for each ticker and date
+	lookback_low : DataFrame
+	Lookback low price for each ticker and date
+	"""
+	# compute rolling max from high prices and shift by one day to discard the current day
+	lookback_high = df['High'].rolling(window=lookback_days, min_periods=lookback_days).max().shift()
+	# compute rolling min from low prices and shift by one day to discard the current day
+	lookback_low = df['Low'].rolling(window=lookback_days, min_periods=lookback_days).min().shift()
+	t = pd.concat([lookback_high,lookback_low],axis=1)
+	t.columns = ['Win_High',"Win_Low"]
+	df=pd.concat([df,t], axis=1)
+	# generate signals according to above condition
+	long_short = df['Close'].copy()
+	long_short[:] = 0
+	long_short[df['Close'] > lookback_high] = 1
+	long_short[df['Close'] < lookback_low] = -1
+	long_short=pd.DataFrame(long_short)
+	long_short.columns = ['Signals']
+	df=pd.concat([df,long_short], axis=1)
+	return df
+
+
 def download_from_yahoo(ticker , start_date , end_date=False , Vol = False):
 	
 	'''Imports Data From Yahoo Finance
