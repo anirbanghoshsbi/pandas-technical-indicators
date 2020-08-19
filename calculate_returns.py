@@ -11,5 +11,5 @@ def calc_return(df, daysout):
     print('The Return for the Strategy by holding for {} days  is : {}' .format(daysout, total_return))
     df['BuyandHold'] = np.log(df['NextClose']/df['Close'])
     buy_hold_r = df['BuyandHold'].sum()
-    print('The Return for the Strategy by holding for {} days  is : {}' .format(daysout, buy_hold_r))
+    print('The Return for the BUY n HOLD Strategy by holding for {} days  is : {}' .format(daysout, buy_hold_r))
     
