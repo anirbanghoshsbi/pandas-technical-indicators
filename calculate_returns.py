@@ -1,4 +1,5 @@
-
+import numpy as np
+import pandas as pd 
 
 def calc_return(df, daysout):
     df['NextClose']=df['Close'].shift(-daysout)
