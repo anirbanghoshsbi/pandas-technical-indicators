@@ -8,8 +8,8 @@ def calc_return(df, daysout):
                             x['Signal_Flag']==1 else 0 , axis=1)
     total_return = df['Return'].sum()
 
-    print('The Return for the Strategy by holding for' daysout 'days   is :' , total_return)
+    print('The Return for the Strategy by holding for {} days  is : {}' .format(daysout, total_return))
     df['BuyandHold'] = np.log(df['NextClose']/df['Close'])
     buy_hold_r = df['BuyandHold'].sum()
-    print('The Return for the Strategy by holding for {} days   is :' , buy_hold_r ,{daysout})
-    return total_return , buy_hold_r
+    print('The Return for the Strategy by holding for {} days  is : {}' , buy_hold_r ,{daysout, buy_hold_r})
+    
